@@ -101,3 +101,43 @@ fetchdataAave().then(users => {
 });
 
 "binance price getting api" = https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT
+
+const borrowRateQuery = `{
+  reserves(first: 5, skip: 0) {  # Limit results to 5 per request
+      symbol
+      variableBorrowRate
+  }
+}`
+const fetchBorrowRate = async () => {
+const url = `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/78vjx5nN57gJDJCGYafxkGNKQSEFfTNo4AkNBcRQZV2R`
+const data = await request(url, borrowRateQuery)
+return data
+}
+
+// fetchBorrowRate().then(data => {
+//     data.reserves.forEach(reserve => {
+//       const borrowRateRay = BigInt(reserve.variableBorrowRate); // Handle large numbers
+//       const borrowRate = Number(borrowRateRay) / 1e27 * 100; // Convert to %
+
+//       console.log(`${reserve.symbol} - Borrow Rate: ${borrowRate.toFixed(2)}%`);
+//     });
+// })
+
+const compoundQuery = `{
+markets(first: 5) {  # Fetch only 5 markets to reduce indexer load
+symbol
+borrowRate
+}
+}`
+
+const fetchBorrowCompound = async () => {
+const url = `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/AAva7YSZBLar4MaxQ3MqdJDFXkkHEaCDeibKTnraex1x`
+const data = await request(url, compoundQuery)
+return data
+}
+
+fetchBorrowCompound().then(data => {
+data.markets.forEach(market => {
+console.log(`${market.symbol} - Borrow Rate: ${market.borrowRate}`);
+});
+})
