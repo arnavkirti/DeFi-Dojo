@@ -364,6 +364,128 @@ export default function MockFlashLoansInterface({
     </motion.div>
   );
 
+  // Level 3: Interest Rate Swap Interface
+  const InterestRateSwapInterface = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-4"
+    >
+      <h3 className="text-xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">
+        Interest Rate Swap Scanner
+      </h3>
+
+      <motion.div
+        className="p-4 border border-primary/20 rounded-lg bg-black/40 backdrop-blur-sm"
+        whileHover={{ scale: 1.02 }}
+      >
+        <Button
+          className="w-full bg-gradient-to-r from-green-500 to-blue-500"
+          onClick={() => {
+            setInterestRates({
+              'Aave': 3.5,
+              'Compound': 4.2,
+              'dYdX': 3.8
+            });
+            onTaskProgress("RESEARCH_INTEREST_RATES");
+            setStep(2);
+          }}
+          disabled={step > 1}
+        >
+          Research Interest Rates
+        </Button>
+
+        {Object.keys(interestRates).length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-4 space-y-2"
+          >
+            <h4 className="font-semibold text-blue-300">Current Rates:</h4>
+            {Object.entries(interestRates).map(([platform, rate]) => (
+              <div key={platform} className="flex justify-between">
+                <span>{platform}:</span>
+                <span className="text-green-400">{rate}% APR</span>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </motion.div>
+
+      {step >= 2 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-4 border border-primary/20 rounded-lg bg-black/40"
+        >
+          <Button
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500"
+            onClick={() => {
+              onTaskProgress("DEVELOP_SWAP_STRATEGY");
+              setStep(3);
+            }}
+            disabled={step > 2}
+          >
+            Develop Swap Strategy
+          </Button>
+
+          {step >= 3 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-4"
+            >
+              <h4 className="font-semibold text-purple-300">Strategy Details:</h4>
+              <p>Borrow from: Aave (3.5% APR)</p>
+              <p>Lend to: Compound (4.2% APR)</p>
+              <p className="text-green-400">Potential Spread: 0.7%</p>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
+
+      {step >= 3 && (
+        <>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 border border-primary/20 rounded-lg bg-black/40"
+          >
+            <Button
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500"
+              onClick={() => {
+                onTaskProgress("SIMULATE_RATE_SWAP");
+                setStep(4);
+              }}
+              disabled={step > 3}
+            >
+              Simulate Rate Swap
+            </Button>
+          </motion.div>
+
+          {step >= 4 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 border border-primary/20 rounded-lg bg-black/40"
+            >
+              <Button
+                className="w-full bg-gradient-to-r from-pink-500 to-red-500"
+                onClick={() => {
+                  onTaskProgress("EXECUTE_RATE_SWAP");
+                  completeLevel();
+                }}
+                disabled={isLevelComplete}
+              >
+                Execute Rate Swap
+              </Button>
+            </motion.div>
+          )}
+        </>
+      )}
+    </motion.div>
+  );
+
   
             </motion.div>
           </motion.div>
