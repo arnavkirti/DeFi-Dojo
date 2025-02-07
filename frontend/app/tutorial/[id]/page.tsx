@@ -8,7 +8,27 @@ import { MessageCircle } from "lucide-react";
 import MockUniswapInterface from "@/components/MockUniswapInterface";
 import axios from "axios";
 
-const tutorials = {
+// Add this type at the top with other types
+type Message = {
+  content: string;
+  role: "user" | "assistant";
+};
+
+// Add this type at the top with other types
+type Tutorial = {
+  title: string;
+  description: string;
+  content: string;
+  levels?: {
+    title: string;
+    description: string;
+    tasks: { text: string; type: string; completed: boolean }[];
+  }[];
+  textForAI: string;
+};
+
+// Update the tutorials object type
+const tutorials: Record<number, Tutorial> = {
   1: {
     title: "Understanding Uniswap",
     description:
@@ -21,45 +41,231 @@ const tutorials = {
       the need for a traditional order book. Instead, it uses liquidity pools and a mathematical
       formula to determine prices.
     `,
-    tasks: [
+    levels: [
       {
-        text: "Connect your wallet to Uniswap",
-        type: "CONNECT_WALLET",
-        completed: false,
-      },
-      {
-        text: "Select tokens for a swap (ETH to USDC)",
-        type: "SELECT_TOKENS",
-        completed: false,
-      },
-      {
-        text: "Enter an amount and review the swap details",
-        type: "REVIEW_SWAP",
-        completed: false,
+        title: "Level 1",
+        description: "",
+        tasks: [
+          {
+            text: "Connect your wallet to Uniswap",
+            type: "CONNECT_WALLET",
+            completed: false,
+          },
+          {
+            text: "Select tokens for a swap (ETH to USDC)",
+            type: "SELECT_TOKENS",
+            completed: false,
+          },
+          {
+            text: "Enter an amount and review the swap details",
+            type: "REVIEW_SWAP",
+            completed: false,
+          },
+        ],
       },
     ],
+    textForAI:
+      "Explain how Uniswap's automated market maker (AMM) works, focusing on its liquidity pools, token swaps, and the concept of impermanent loss. Provide an in-depth example of a trade execution on Uniswap.",
+  },
+  2: {
+    title: "Understanding Dao",
+    description: "Learn the basics of DAOs and how they work.",
+    content: `
+      DAOs (Decentralized Autonomous Organizations) are innovative organizational structures
+      that leverage blockchain technology to enable collective decision-making without centralized leadership.
+      In a DAO, community members can propose, debate, and vote on decisions that affect the entire organization.
+      This model promotes transparency, inclusivity, and community governance.
+    `,
+    levels: [
+      {
+        title: "Level 1",
+        description: "",
+        tasks: [
+          {
+            text: "Join a DAO community platform",
+            type: "JOIN_DAO",
+            completed: false,
+          },
+          {
+            text: "Review recent DAO proposals",
+            type: "REVIEW_PROPOSALS",
+            completed: false,
+          },
+          {
+            text: "Participate in a DAO vote",
+            type: "VOTE_ON_PROPOSAL",
+            completed: false,
+          },
+          {
+            text: "Discuss DAO governance on the community forum",
+            type: "DISCUSS_GOVERNANCE",
+            completed: false,
+          },
+        ],
+      },
+    ],
+
+    textForAI:
+      "Explain how Decentralized Autonomous Organizations (DAOs) work, focusing on the principles of decentralized governance, the proposal and voting mechanisms, token-based decision making, and how community consensus is achieved. Provide an in-depth example of how a proposal is submitted, debated, and executed within a DAO.",
+  },
+  3: {
+    title: "Understanding Yield Farming",
+    description: "Learn the basics of Yield Farming and how it works.",
+    content: `
+      Yield farming is a strategy in DeFi that involves staking or locking up digital assets in a smart contract to generate passive income.
+      It typically involves providing liquidity to a decentralized exchange (DEX) or participating in a yield-generating protocol.
+      The goal is to maximize returns by earning interest or rewards from the assets.
+    `,
+    levels: [
+      {
+        title: "Level 1: Liquidity Provider",
+        description:
+          "Learn the fundamentals of providing liquidity to a DeFi protocol.",
+        tasks: [
+          {
+            text: "Connect your wallet to a liquidity pool platform",
+            type: "CONNECT_WALLET",
+            completed: false,
+          },
+          {
+            text: "Deposit assets into a liquidity pool",
+            type: "DEPOSIT_LIQUIDITY",
+            completed: false,
+          },
+          {
+            text: "Monitor your pool share and the fees you earn",
+            type: "MONITOR_POOL",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Level 2: Borrowing",
+        description:
+          "Understand how to use your crypto as collateral to borrow assets.",
+        tasks: [
+          {
+            text: "Select a DeFi lending platform",
+            type: "SELECT_PLATFORM",
+            completed: false,
+          },
+          {
+            text: "Deposit collateral and simulate a borrowing transaction",
+            type: "DEPOSIT_COLLATERAL",
+            completed: false,
+          },
+          {
+            text: "Review loan terms and risk factors",
+            type: "REVIEW_LOAN_TERMS",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Level 3: Lending",
+        description:
+          "Explore how lending your crypto can generate passive income.",
+        tasks: [
+          {
+            text: "Provide assets for lending on a chosen platform",
+            type: "PROVIDE_LENDING",
+            completed: false,
+          },
+          {
+            text: "Review interest rates and understand lending risks",
+            type: "REVIEW_INTEREST_RATES",
+            completed: false,
+          },
+          {
+            text: "Simulate a lending transaction and analyze potential returns",
+            type: "SIMULATE_LENDING",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Level 4: Staking",
+        description:
+          "Learn how staking your tokens can yield additional rewards.",
+        tasks: [
+          {
+            text: "Stake your tokens on a staking platform",
+            type: "STAKE_TOKENS",
+            completed: false,
+          },
+          {
+            text: "Review staking rewards and understand lock-up periods",
+            type: "REVIEW_STAKING_DETAILS",
+            completed: false,
+          },
+          {
+            text: "Monitor your staked tokens and claim rewards when available",
+            type: "MONITOR_AND_CLAIM",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Level 5: Holding",
+        description:
+          "Understand the long-term strategy of holding assets for passive yield and risk management.",
+        tasks: [
+          {
+            text: "Evaluate the benefits of holding versus active yield strategies",
+            type: "EVALUATE_HOLDING",
+            completed: false,
+          },
+          {
+            text: "Set up a dashboard to track your asset performance over time",
+            type: "SETUP_TRACKING",
+            completed: false,
+          },
+          {
+            text: "Analyze historical data and market trends for better decision-making",
+            type: "ANALYZE_TRENDS",
+            completed: false,
+          },
+        ],
+      },
+    ],
+    textForAI:
+      "Explain how yield farming works, focusing on the different types of yield farming strategies, the benefits of participating in yield farming, and the risks associated with it.",
+  },
+  4: {
+    title: "Understanding Flash Loans",
+    description: "Learn the basics of Flash Loans and how they work.",
+    content: `
+      Flash loans are a type of DeFi loan that allows users to borrow assets without collateral.
+      They are typically used for arbitrage opportunities or to quickly respond to market conditions.
+    `,
+    textForAI:
+      "Explain how flash loans work in DeFi, including their use cases, benefits, risks, and how they are executed within a single transaction block.",
   },
 };
 
-// Add these new types
-type Message = {
-  content: string;
-  role: "user" | "assistant";
-};
-
-export default function TutorialPage({ params }: { params: { id: string } }) {
+const TutorialPage = ({ params }: { params: { id: string } }) => {
   const { authenticated } = usePrivy();
   const router = useRouter();
   const tutorial = tutorials[Number(params.id) as keyof typeof tutorials];
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNFTMinted, setIsNFTMinted] = useState(false);
-  const [tasks, setTasks] = useState(
-    tutorial?.tasks.map((task) => ({ ...task, completed: false })) || []
-  );
+  const [currentLevel, setCurrentLevel] = useState(0);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [tutorialContent, setTutorialContent] = useState("");
+  const [levels, setLevels] = useState<
+    {
+      title: string;
+      description: string;
+      tasks: { text: string; completed: boolean; type: string }[];
+    }[]
+  >(
+    tutorial?.levels?.map((level) => ({
+      ...level,
+      tasks: level.tasks.map((task) => ({ ...task, completed: false })),
+    })) || []
+  );
+  const [progress, setProgress] = useState(0);
 
   React.useEffect(() => {
     if (!authenticated) {
@@ -69,63 +275,85 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
 
   React.useEffect(() => {
     if (authenticated) {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.type === "CONNECT_WALLET" ? { ...task, completed: true } : task
-        )
+      setLevels(
+        (
+          prev: {
+            title: string;
+            description: string;
+            tasks: { text: string; completed: boolean; type: string }[];
+          }[]
+        ) =>
+          prev.map(
+            (
+              level: {
+                title: string;
+                description: string;
+                tasks: { text: string; completed: boolean; type: string }[];
+              },
+              idx
+            ) =>
+              idx === currentLevel
+                ? {
+                    ...level,
+                    tasks: level.tasks.map((task) =>
+                      task.type === "CONNECT_WALLET"
+                        ? { ...task, completed: true }
+                        : task
+                    ),
+                  }
+                : level
+          )
       );
     }
-  }, [authenticated]);
+  }, [authenticated, currentLevel]);
 
-  // Add this effect to fetch tutorial content on mount
   React.useEffect(() => {
-    const fetchTutorialContent = async () => {
-      try {
-        const response = await axios.post(
-          "https://autonome.alt.technology/agent-eqtrhs/chat",
-          {
-            message:
-              "Explain how Uniswap's automated market maker (AMM) works, focusing on its liquidity pools, token swaps, and the concept of impermanent loss. Provide an in-depth example of a trade execution on Uniswap.",
-          },
-          {
-            auth: {
-              username: process.env.NEXT_PUBLIC_AI_AGENT_USERNAME!,
-              password: process.env.NEXT_PUBLIC_AI_AGENT_PASSWORD!,
-            },
-          }
-        );
-
-        setTutorialContent(response.data.response[0]);
-      } catch (error) {
-        console.error("Error fetching tutorial content:", error);
-        setTutorialContent(
-          "Failed to load tutorial content. Please try refreshing the page."
-        );
-      }
-    };
-
-    fetchTutorialContent();
-  }, []);
-
-  if (!tutorial) {
-    return <div>Tutorial not found</div>;
-  }
+    const newProgress = calculateTutorialProgress();
+    setProgress(newProgress);
+  }, [levels]);
 
   const handleTaskProgress = (taskType: string) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.type === taskType ? { ...task, completed: true } : task
+    setLevels((prev) =>
+      prev.map((level, idx) =>
+        idx === currentLevel
+          ? {
+              ...level,
+              tasks: level.tasks.map((task) =>
+                task.type === taskType ? { ...task, completed: true } : task
+              ),
+            }
+          : level
       )
     );
   };
 
-  const handleSubmitTasks = async () => {
-    if (tasks.every((task) => task.completed)) {
-      // Add NFT minting logic here
-      alert("Congratulations! You've completed all tasks. NFT will be minted.");
-      setIsNFTMinted(true);
-    } else {
-      alert("Please complete all tasks first!");
+  const isCurrentLevelComplete = () => {
+    const currentLevelTasks = levels[currentLevel]?.tasks;
+    return currentLevelTasks?.every((task) => task.completed) ?? false;
+  };
+
+  const isLastLevel = () => {
+    return currentLevel === levels.length - 1;
+  };
+
+  const handleNextLevel = () => {
+    if (currentLevel < levels.length - 1) {
+      setCurrentLevel((prev) => prev + 1);
+    }
+  };
+
+  const handleMintNFT = async () => {
+    if (isCurrentLevelComplete()) {
+      try {
+        // Add your NFT minting logic here
+        setIsNFTMinted(true);
+        alert(
+          "Congratulations! NFT has been minted for completing the tutorial!"
+        );
+      } catch (error) {
+        console.error("Error minting NFT:", error);
+        alert("Failed to mint NFT. Please try again.");
+      }
     }
   };
 
@@ -134,7 +362,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
     if (tutorials[nextTutorialId as keyof typeof tutorials]) {
       router.push(`/tutorial/${nextTutorialId}`);
     } else {
-      router.push("/tutorials"); // or wherever you want to redirect when there are no more tutorials
+      router.push("/tutorials");
     }
   };
 
@@ -177,6 +405,22 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
     setInputMessage("");
   };
 
+  const calculateTutorialProgress = () => {
+    if (!levels.length) return 0;
+
+    let completedTasks = 0;
+    let totalTasks = 0;
+
+    levels.forEach((level) => {
+      level.tasks.forEach((task) => {
+        if (task.completed) completedTasks++;
+        totalTasks++;
+      });
+    });
+
+    return (completedTasks / totalTasks) * 100;
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 h-screen mt-16">
       <div className="grid grid-cols-2 gap-6 h-full">
@@ -184,20 +428,12 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
         <div className="relative">
           <div className="bg-muted/5 rounded-lg p-6 border border-primary/10 h-full overflow-y-auto">
             <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              {tutorial.title}
+              {tutorial.title} - {levels[currentLevel]?.title}
             </h1>
             <div className="prose prose-invert max-w-none mb-8">
-              {tutorialContent ? (
-                <div className="whitespace-pre-wrap">{tutorialContent}</div>
-              ) : (
-                <div className="flex items-center justify-center h-32">
-                  <div className="flex space-x-2">
-                    <div className="w-3 h-3 bg-primary/50 rounded-full animate-bounce" />
-                    <div className="w-3 h-3 bg-primary/50 rounded-full animate-bounce delay-100" />
-                    <div className="w-3 h-3 bg-primary/50 rounded-full animate-bounce delay-200" />
-                  </div>
-                </div>
-              )}
+              <div className="whitespace-pre-wrap">
+                {levels[currentLevel]?.description || tutorial.content}
+              </div>
             </div>
           </div>
 
@@ -292,104 +528,118 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
           )}
         </div>
 
-        {/* Right Panel - Tasks and Mock Interface */}
+        {/* Right Panel - Modified for Tutorial Progress */}
         <div className="flex flex-col h-full">
-          {/* Tasks Section */}
           <div className="bg-gradient-to-br from-muted/10 via-primary/5 to-muted/10 rounded-lg p-6 border border-primary/20 mb-4 backdrop-blur-sm">
-            <h2 className="text-xl font-semibold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Tasks to Complete:
-            </h2>
-            <ul className="space-y-4">
-              {tasks.map((task, index) => (
-                <li
-                  key={index}
-                  className={`
-                    relative flex items-center gap-4 p-3 
-                    rounded-lg transition-all duration-300
-                    ${
-                      task.completed
-                        ? "bg-primary/10 border-primary/30"
-                        : "bg-muted/5 border-muted/20"
-                    } 
-                    border backdrop-blur-sm
-                    hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/5
-                  `}
-                >
-                  <div
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-xl font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  Tutorial {params.id} - {tutorial.title}
+                </h2>
+                <span className="text-sm text-muted-foreground">
+                  Level {currentLevel + 1} of {levels.length}
+                </span>
+              </div>
+              <div className="w-full bg-muted/20 rounded-full h-2">
+                <div
+                  className="bg-primary rounded-full h-2 transition-all duration-300"
+                  style={{
+                    width: `${progress}%`,
+                  }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                <span>Progress: {Math.round(progress)}%</span>
+                <span>{Math.round(progress)}% Complete</span>
+              </div>
+            </div>
+
+            {/* Current Level Tasks */}
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-primary mb-2">
+                Level {currentLevel + 1}: {levels[currentLevel]?.title}
+              </h3>
+              <p className="text-muted-foreground text-sm mb-4">
+                {levels[currentLevel]?.description}
+              </p>
+
+              {/* Only show tasks for current level */}
+              <ul className="space-y-4">
+                {levels[currentLevel]?.tasks.map((task, index) => (
+                  <li
+                    key={index}
                     className={`
-                      w-6 h-6 rounded-full border-2 flex items-center justify-center
-                      transition-all duration-300
+                      relative flex items-center gap-4 p-3 
+                      rounded-lg transition-all duration-300
                       ${
                         task.completed
-                          ? "border-primary bg-primary/20"
-                          : "border-muted/40 bg-muted/10"
-                      }
+                          ? "bg-primary/10 border-primary/30"
+                          : "bg-muted/5 border-muted/20"
+                      } 
+                      border backdrop-blur-sm
                     `}
                   >
-                    {task.completed && (
-                      <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
-                    )}
-                  </div>
-                  <span
-                    className={`
-                    font-medium
-                    ${
-                      task.completed
-                        ? "text-primary/70 line-through"
-                        : "text-foreground"
-                    }
-                  `}
-                  >
-                    {task.text}
-                  </span>
-                  {task.completed && (
-                    <span className="absolute right-3 text-xs text-primary/70">
-                      Completed ✓
+                    <div
+                      className={`
+                        w-6 h-6 rounded-full border-2 flex items-center justify-center
+                        transition-all duration-300
+                        ${
+                          task.completed
+                            ? "border-primary bg-primary/20"
+                            : "border-muted/40 bg-muted/10"
+                        }
+                      `}
+                    >
+                      {task.completed && (
+                        <div className="w-3 h-3 rounded-full bg-primary animate-pulse" />
+                      )}
+                    </div>
+                    <span
+                      className={
+                        task.completed
+                          ? "text-primary/70 line-through"
+                          : "text-foreground"
+                      }
+                    >
+                      {task.text}
                     </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-            <div className="space-y-3">
-              <Button
-                onClick={handleSubmitTasks}
-                className={`
-                  w-full relative overflow-hidden
-                  transition-all duration-300
-                  ${
-                    tasks.every((task) => task.completed)
-                      ? "bg-gradient-to-r from-primary to-accent hover:shadow-lg hover:shadow-primary/20"
-                      : "bg-muted/20"
-                  }
-                `}
-                disabled={!tasks.every((task) => task.completed) || isNFTMinted}
-              >
-                {isNFTMinted ? (
-                  "NFT Minted ✨"
-                ) : tasks.every((task) => task.completed) ? (
-                  <>
-                    <span className="relative z-10">
-                      Claim Your NFT Achievement
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-20 animate-pulse" />
-                  </>
-                ) : (
-                  "Complete All Tasks to Claim NFT"
-                )}
-              </Button>
+                  </li>
+                ))}
+              </ul>
 
-              {isNFTMinted && (
-                <Button
-                  onClick={handleNextTutorial}
-                  className="w-full bg-gradient-to-r from-accent to-primary hover:shadow-lg hover:shadow-accent/20 transition-all duration-300"
-                >
-                  Continue to Next Tutorial →
-                </Button>
-              )}
+              {/* Navigation Buttons */}
+              <div className="space-y-3 mt-4">
+                {isCurrentLevelComplete() && !isLastLevel() && (
+                  <Button
+                    onClick={handleNextLevel}
+                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                  >
+                    Continue to Level {currentLevel + 2}
+                  </Button>
+                )}
+
+                {isCurrentLevelComplete() && isLastLevel() && !isNFTMinted && (
+                  <Button
+                    onClick={handleMintNFT}
+                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                  >
+                    Mint Tutorial Completion NFT
+                  </Button>
+                )}
+
+                {isNFTMinted && (
+                  <Button
+                    onClick={handleNextTutorial}
+                    className="w-full bg-gradient-to-r from-accent to-primary hover:opacity-90"
+                  >
+                    Start Next Tutorial →
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Mock Uniswap Interface */}
+          {/* Mock Interface */}
           <div className="flex-1 bg-muted/10 rounded-lg p-6 border border-primary/10">
             <MockUniswapInterface onTaskProgress={handleTaskProgress} />
           </div>
@@ -397,4 +647,6 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
       </div>
     </div>
   );
-}
+};
+
+export default TutorialPage;
