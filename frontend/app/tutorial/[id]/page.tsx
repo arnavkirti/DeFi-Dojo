@@ -9,10 +9,11 @@ import MockUniswapInterface from "@/components/MockUniswapInterface";
 import axios from "axios";
 import MockDaoInterface from "@/components/MockDaoInterface";
 import MockYieldFarmingInterface from "@/components/MockYieldFarmingInterface";
+import MockFlashLoansInterface from "@/components/MockFlashLoansInterface";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const tutorials = {
-  1: {
+  4: {
     title: "Understanding Uniswap",
     description:
       "Learn the basics of Uniswap and how decentralized exchanges work.",
@@ -203,16 +204,96 @@ const tutorials = {
     ],
     textForAI: "Explain how yield farming works, focusing on the different types of yield farming strategies, the benefits of participating in yield farming, and the risks associated with it.",
   },
-  4: {
+  1: {
     title: "Understanding Flash Loans",
     description: "Learn the basics of Flash Loans and how they work.",
     content: `
       Flash loans are a type of DeFi loan that allows users to borrow assets without collateral.
       They are typically used for arbitrage opportunities or to quickly respond to market conditions.
     `,
-    
-    
-  }
+    levels: [
+      {
+        title: "Level 1: Arbitrage Opportunities",
+        description: "Explore how to identify and execute arbitrage opportunities using flash loans. Learn to analyze multiple markets, detect pricing inefficiencies, and execute a series of trades that exploit these differences.",
+        tasks: [
+          {
+            text: "Study the price variations across multiple decentralized exchanges (DEXs) to identify potential arbitrage opportunities. Use analytics tools and historical data to spot trends and determine when markets are misaligned.",
+            type: "STUDY_PRICE_VARIATIONS",
+            completed: false,
+          },
+          {
+            text: "Set up a simulation environment to test arbitrage strategies. Create scenarios where you borrow funds via a flash loan and execute sequential trades across different DEXs to take advantage of price discrepancies.",
+            type: "SIMULATE_ARBITRAGE_TRADE",
+            completed: false,
+          },
+          {
+            text: "Calculate the net profit of an arbitrage trade by considering gas fees, slippage, and other transaction costs. Develop a detailed spreadsheet or use a simulation tool to confirm that the profit margin is sufficient before execution.",
+            type: "CALCULATE_NET_PROFIT",
+            completed: false,
+          },
+          {
+            text: "Execute a live arbitrage trade using a flash loan, ensuring you monitor the transaction in real time and adjust parameters dynamically to secure the profit.",
+            type: "EXECUTE_ARBITRAGE",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Level 2: Flash Loan Liquidation Profits",
+        description: "Learn how flash loans can be used to profit from liquidation events. Understand how to monitor vulnerable positions, analyze collateral ratios, and execute a liquidation strategy to secure discounted assets.",
+        tasks: [
+          {
+            text: "Identify DeFi lending platforms that provide real-time data on positions nearing liquidation. Research the key indicators such as collateral-to-debt ratios and market volatility that signal a liquidation risk.",
+            type: "IDENTIFY_LIQUIDATION_OPPORTUNITIES",
+            completed: false,
+          },
+          {
+            text: "Perform a detailed analysis of at-risk positions by calculating their collateral ratios. Use simulation tools to pinpoint the optimal moment when a flash loan can be used to trigger a liquidation event.",
+            type: "ANALYZE_RISKY_POSITIONS",
+            completed: false,
+          },
+          {
+            text: "Simulate a flash loan liquidation scenario. Borrow funds via a flash loan to pay off the debt of a vulnerable position, claim the collateral at a discount, and document every step along with the expected profit margin.",
+            type: "SIMULATE_LIQUIDATION",
+            completed: false,
+          },
+          {
+            text: "Execute a flash loan liquidation in a controlled environment. Initiate the loan, repay the target's debt, and secure the discounted collateral, while continuously monitoring market conditions to optimize profit.",
+            type: "EXECUTE_LIQUIDATION",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Level 3: Interest Rate Swaps",
+        description: "Discover how to leverage differences in interest rates using flash loans. This level covers researching interest rate disparities, strategizing a temporary swap, and executing a flash loan to benefit from the spread.",
+        tasks: [
+          {
+            text: "Research and compare interest rates across multiple DeFi lending and borrowing platforms. Identify instances where the borrowing rate on one platform is significantly lower than the lending rate on another.",
+            type: "RESEARCH_INTEREST_RATES",
+            completed: false,
+          },
+          {
+            text: "Develop a comprehensive strategy to utilize flash loans for interest rate swaps. Outline the steps for borrowing at a lower rate, repaying at a higher rate, and ensuring the spread generates a net profit.",
+            type: "DEVELOP_SWAP_STRATEGY",
+            completed: false,
+          },
+          {
+            text: "Simulate an interest rate swap transaction. Model various market conditions including fluctuating rates, transaction fees, and flash loan durations to evaluate the effectiveness of your strategy.",
+            type: "SIMULATE_RATE_SWAP",
+            completed: false,
+          },
+          {
+            text: "Execute the interest rate swap using a flash loan. Monitor the transaction closely, adjust parameters as needed during execution, and verify that the swap reduces costs or yields the anticipated profit.",
+            type: "EXECUTE_RATE_SWAP",
+            completed: false,
+          },
+        ],
+      },
+    ],
+    textForAI: "Explain how flash loans work, focusing on the different types of flash loans, the benefits of participating in flash loans, and the risks associated with it.",
+  },
+  
   
   
 };
@@ -596,6 +677,19 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
                     <MockYieldFarmingInterface 
                       onTaskProgress={handleTaskProgress}
                       level={levelIndex}
+                    />
+                  )}
+                  {tutorial.title === "Understanding Flash Loans" && (
+                    <MockFlashLoansInterface
+                      onTaskProgress={handleTaskProgress}
+                      level={currentLevel}
+                      onLevelComplete={() => {
+                        if (currentLevel < tutorial.levels.length - 1) {
+                          setCurrentLevel(currentLevel + 1);
+                          setUnlockedLevels(prev => [...prev, currentLevel + 1]);
+                        }
+                      }}
+                      currentTasks={tasks[currentLevel] || []}
                     />
                   )}
                 </div>
