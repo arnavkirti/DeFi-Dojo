@@ -27,24 +27,18 @@ type Tutorial = {
   textForAI: string;
 };
 
-// Update the tutorials object type
+// Update the tutorials object
 const tutorials: Record<number, Tutorial> = {
   1: {
     title: "Understanding Uniswap",
     description:
       "Learn the basics of Uniswap and how decentralized exchanges work.",
-    content: `
-      Welcome to your first lesson! Today we'll learn about Uniswap, one of the most popular
-      decentralized exchanges in the DeFi ecosystem.
-
-      Uniswap is an automated market maker (AMM) that allows users to trade tokens without
-      the need for a traditional order book. Instead, it uses liquidity pools and a mathematical
-      formula to determine prices.
-    `,
+    content: `Welcome to your first lesson! Today we'll learn about Uniswap, one of the most popular
+      decentralized exchanges in the DeFi ecosystem.`,
     levels: [
       {
-        title: "Level 1",
-        description: "",
+        title: "Token Swapping",
+        description: "Learn how to swap tokens using Uniswap's interface.",
         tasks: [
           {
             text: "Connect your wallet to Uniswap",
@@ -52,20 +46,63 @@ const tutorials: Record<number, Tutorial> = {
             completed: false,
           },
           {
-            text: "Select tokens for a swap (ETH to USDC)",
+            text: "Select tokens for swap (ETH to USDC)",
             type: "SELECT_TOKENS",
             completed: false,
           },
           {
-            text: "Enter an amount and review the swap details",
-            type: "REVIEW_SWAP",
+            text: "Enter amount and complete the swap",
+            type: "COMPLETE_SWAP",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Providing Liquidity",
+        description:
+          "Learn how to provide liquidity to Uniswap pools and earn fees.",
+        tasks: [
+          {
+            text: "Navigate to liquidity section",
+            type: "NAVIGATE_LIQUIDITY",
+            completed: false,
+          },
+          {
+            text: "Select token pair for the pool",
+            type: "SELECT_POOL_TOKENS",
+            completed: false,
+          },
+          {
+            text: "Add liquidity to the pool",
+            type: "ADD_LIQUIDITY",
+            completed: false,
+          },
+        ],
+      },
+      {
+        title: "Managing Liquidity",
+        description: "Learn how to withdraw liquidity and claim earned fees.",
+        tasks: [
+          {
+            text: "View your liquidity positions",
+            type: "VIEW_POSITIONS",
+            completed: false,
+          },
+          {
+            text: "Check accumulated fees",
+            type: "CHECK_FEES",
+            completed: false,
+          },
+          {
+            text: "Withdraw liquidity and claim fees",
+            type: "WITHDRAW_LIQUIDITY",
             completed: false,
           },
         ],
       },
     ],
     textForAI:
-      "Explain how Uniswap's automated market maker (AMM) works, focusing on its liquidity pools, token swaps, and the concept of impermanent loss. Provide an in-depth example of a trade execution on Uniswap.",
+      "Explain how Uniswap's automated market maker (AMM) works, focusing on liquidity pools, token swaps, and fee collection.",
   },
   2: {
     title: "Understanding Dao",
@@ -266,6 +303,9 @@ const TutorialPage = ({ params }: { params: { id: string } }) => {
     })) || []
   );
   const [progress, setProgress] = useState(0);
+  const [amount, setAmount] = useState("");
+  const [selectedTokens, setSelectedTokens] = useState({ from: "", to: "" });
+  const [view, setView] = useState<"swap" | "liquidity" | "positions">("swap");
 
   React.useEffect(() => {
     if (!authenticated) {
@@ -420,6 +460,68 @@ const TutorialPage = ({ params }: { params: { id: string } }) => {
 
     return (completedTasks / totalTasks) * 100;
   };
+
+  // When amount is entered
+  const handleAmountInput = (value: string) => {
+    setAmount(value);
+  };
+
+  // When tokens are selected
+  const handleTokenSelection = (from: string, to: string) => {
+    setSelectedTokens({ from, to });
+    if (from && to) {
+      handleTaskProgress("SELECT_TOKENS");
+    }
+  };
+
+  // Handle swap button click
+  const handleSwap = () => {
+    if (amount && selectedTokens.from && selectedTokens.to) {
+      handleTaskProgress("COMPLETE_SWAP");
+      alert("Swap completed successfully!");
+    }
+  };
+
+  // Handle view changes
+  const handleViewChange = (newView: string) => {
+    setView(newView as "swap" | "liquidity" | "positions");
+    if (newView === "liquidity") {
+      handleTaskProgress("NAVIGATE_LIQUIDITY");
+    }
+  };
+
+  // Add navigation buttons above the interface
+  const renderViewButtons = () => (
+    <div className="flex gap-2 mb-4">
+      <Button
+        onClick={() => {
+          setView("swap");
+          handleViewChange("swap");
+        }}
+        variant={view === "swap" ? "default" : "outline"}
+      >
+        Swap
+      </Button>
+      <Button
+        onClick={() => {
+          setView("liquidity");
+          handleViewChange("liquidity");
+        }}
+        variant={view === "liquidity" ? "default" : "outline"}
+      >
+        Liquidity
+      </Button>
+      <Button
+        onClick={() => {
+          setView("positions");
+          handleViewChange("positions");
+        }}
+        variant={view === "positions" ? "default" : "outline"}
+      >
+        Positions
+      </Button>
+    </div>
+  );
 
   return (
     <div className="container mx-auto px-4 py-8 h-screen mt-16">
@@ -641,7 +743,176 @@ const TutorialPage = ({ params }: { params: { id: string } }) => {
 
           {/* Mock Interface */}
           <div className="flex-1 bg-muted/10 rounded-lg p-6 border border-primary/10">
-            <MockUniswapInterface onTaskProgress={handleTaskProgress} />
+            {renderViewButtons()}
+
+            {/* Swap Interface */}
+            {view === "swap" && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="relative">
+                    <select
+                      className="w-full p-2 rounded bg-muted/20 border border-primary/20 appearance-none cursor-pointer"
+                      value={selectedTokens.from}
+                      onChange={(e) =>
+                        handleTokenSelection(e.target.value, selectedTokens.to)
+                      }
+                    >
+                      <option value="">Select token to swap from</option>
+                      <option value="ETH">ETH</option>
+                      <option value="USDC">USDC</option>
+                      <option value="DAI">DAI</option>
+                      <option value="WBTC">WBTC</option>
+                    </select>
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2.5 4.5L6 8L9.5 4.5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <select
+                      className="w-full p-2 rounded bg-muted/20 border border-primary/20 appearance-none cursor-pointer"
+                      value={selectedTokens.to}
+                      onChange={(e) =>
+                        handleTokenSelection(
+                          selectedTokens.from,
+                          e.target.value
+                        )
+                      }
+                    >
+                      <option value="">Select token to receive</option>
+                      <option value="ETH">ETH</option>
+                      <option value="USDC">USDC</option>
+                      <option value="DAI">DAI</option>
+                      <option value="WBTC">WBTC</option>
+                    </select>
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2.5 4.5L6 8L9.5 4.5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <input
+                  type="number"
+                  placeholder="Enter amount"
+                  className="w-full p-2 rounded bg-muted/20 border border-primary/20"
+                  value={amount}
+                  onChange={(e) => handleAmountInput(e.target.value)}
+                />
+                <Button
+                  className="w-full"
+                  onClick={handleSwap}
+                  disabled={
+                    !amount || !selectedTokens.from || !selectedTokens.to
+                  }
+                >
+                  {!amount || !selectedTokens.from || !selectedTokens.to
+                    ? "Please fill all fields"
+                    : "Swap"}
+                </Button>
+              </div>
+            )}
+
+            {/* Liquidity Interface */}
+            {view === "liquidity" && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <select
+                    className="w-full p-2 rounded bg-muted/20 border border-primary/20"
+                    onChange={(e) => handleTaskProgress("SELECT_POOL_TOKENS")}
+                  >
+                    <option value="">Select token pair</option>
+                    <option value="ETH/USDC">ETH/USDC</option>
+                    <option value="ETH/DAI">ETH/DAI</option>
+                  </select>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="number"
+                      placeholder="Token 1 Amount"
+                      className="w-full p-2 rounded bg-muted/20 border border-primary/20"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Token 2 Amount"
+                      className="w-full p-2 rounded bg-muted/20 border border-primary/20"
+                    />
+                  </div>
+
+                  <Button
+                    className="w-full mt-2"
+                    onClick={() => handleTaskProgress("ADD_LIQUIDITY")}
+                  >
+                    Add Liquidity
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Positions Interface */}
+            {view === "positions" && (
+              <div className="space-y-4">
+                <div className="border border-primary/20 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold mb-2">Your Positions</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>ETH/USDC Pool</span>
+                      <span>0.01% fee tier</span>
+                    </div>
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Pooled ETH: 0.5</span>
+                      <span>Pooled USDC: 1,000</span>
+                    </div>
+                    <div className="flex justify-between text-sm text-primary">
+                      <span>Fees Earned: $12.50</span>
+                    </div>
+                    <Button
+                      className="w-full mt-2"
+                      onClick={() => {
+                        handleTaskProgress("VIEW_POSITIONS");
+                        handleTaskProgress("CHECK_FEES");
+                      }}
+                    >
+                      Claim Fees
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full mt-2"
+                      onClick={() => handleTaskProgress("WITHDRAW_LIQUIDITY")}
+                    >
+                      Withdraw Liquidity
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
