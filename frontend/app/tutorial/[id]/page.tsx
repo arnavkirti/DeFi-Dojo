@@ -104,7 +104,7 @@ const tutorials: Record<number, Tutorial> = {
     textForAI:
       "Explain how Uniswap's automated market maker (AMM) works, focusing on liquidity pools, token swaps, and fee collection.",
   },
-  2: {
+  3: {
     title: "Understanding Dao",
     description: "Learn the basics of DAOs and how they work.",
     content: `
@@ -145,7 +145,7 @@ const tutorials: Record<number, Tutorial> = {
     textForAI:
       "Explain how Decentralized Autonomous Organizations (DAOs) work, focusing on the principles of decentralized governance, the proposal and voting mechanisms, token-based decision making, and how community consensus is achieved. Provide an in-depth example of how a proposal is submitted, debated, and executed within a DAO.",
   },
-  3: {
+  2: {
     title: "Understanding Yield Farming",
     description: "Learn the basics of Yield Farming and how it works.",
     content: `
