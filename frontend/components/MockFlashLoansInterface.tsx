@@ -486,7 +486,67 @@ export default function MockFlashLoansInterface({
     </motion.div>
   );
 
-  
+  const completeLevel = () => {
+    setIsLevelComplete(true);
+    setShowSuccess(true);
+    onLevelComplete?.();
+  };
+
+  const interfaces = [
+    ArbitrageInterface,
+    LiquidationInterface,
+    InterestRateSwapInterface,
+  ];
+
+  const CurrentInterface = interfaces[level];
+
+  return (
+    <div className="relative p-6 border border-primary/20 rounded-lg bg-black/40 backdrop-blur-sm">
+      <CurrentInterface />
+      
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
+          >
+            <motion.div
+              className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-6 rounded-lg border border-primary/30 backdrop-blur-md"
+              initial={{ y: 50 }}
+              animate={{ y: 0 }}
+              transition={{ type: "spring", bounce: 0.4 }}
+            >
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className="absolute -top-10 left-1/2 transform -translate-x-1/2"
+              >
+                <Unlock className="w-8 h-8 text-green-400" />
+              </motion.div>
+              
+              <h3 className="text-2xl font-bold text-center mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Level Complete! 🎉
+              </h3>
+              
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="text-center text-5xl mb-4"
+              >
+                🌟
+              </motion.div>
+              
+              <Button
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                onClick={() => {
+                  setShowSuccess(false);
+                  onLevelComplete?.();
+                }}
+              >
+                Continue to Next Level
+              </Button>
             </motion.div>
           </motion.div>
         )}
