@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { usePrivy } from "@privy-io/react-auth";
+// import { PrivyClient } from "@privy-io/server-auth";
+
+// const privy = new PrivyClient(
+//   process.env.NEXT_PUBLIC_PRIVY_APP_ID || "",
+//   process.env.PRIVY_SECRET || ""
+// );
+
+// const {id, address, chainType } = await privy.walletApi.create({chainType: "ethereum"});
 
 interface MockUniswapInterfaceProps {
   onTaskProgress: (taskType: string) => void;
@@ -35,6 +43,7 @@ export default function MockUniswapInterface({
     if (value && selectedTokens.from && selectedTokens.to) {
       onTaskProgress("REVIEW_SWAP");
     }
+    // console.log(id, address, chainType);
   };
 
   return (
