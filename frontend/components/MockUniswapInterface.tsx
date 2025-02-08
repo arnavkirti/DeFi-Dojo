@@ -12,6 +12,7 @@ import { usePrivy } from "@privy-io/react-auth";
 
 interface MockUniswapInterfaceProps {
   onTaskProgress: (taskType: string) => void;
+  level: number;
 }
 
 export default function MockUniswapInterface({
@@ -44,6 +45,12 @@ export default function MockUniswapInterface({
       onTaskProgress("REVIEW_SWAP");
     }
     // console.log(id, address, chainType);
+  };
+
+  const handleSwap = () => {
+    // TODO: Implement swap logic
+    
+    onTaskProgress("SWAP");
   };
 
   return (
@@ -99,6 +106,7 @@ export default function MockUniswapInterface({
       <Button
         className="w-full"
         disabled={!amount || !selectedTokens.from || !selectedTokens.to}
+        onClick={handleSwap}
       >
         Swap
       </Button>

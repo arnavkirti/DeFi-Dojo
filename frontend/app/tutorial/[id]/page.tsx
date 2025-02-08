@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Lock, Unlock } from "lucide-react";
 import MockUniswapInterface from "@/components/MockUniswapInterface";
 import axios from "axios";
-// import MockDaoInterface from "@/components/MockDaoInterface";
+import MockDaoInterface from "@/components/MockDaoInterface";
 import MockYieldFarmingInterface from "@/components/MockYieldFarmingInterface";
 import MockFlashLoansInterface from "@/components/MockFlashLoansInterface";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,7 +27,7 @@ const tutorials = {
     `,
     levels: [{
       title: "Level 1",
-      description: "",
+      description: "Learn the basics of Uniswap and how decentralized exchanges work.",
       tasks: [
         {
           text: "Connect your wallet to Uniswap",
@@ -345,7 +345,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
     const fetchTutorialContent = async () => {
       try {
         const response = await axios.post(
-          "https://autonome.alt.technology/agent-eqtrhs/chat",
+          "https://autonome.alt.technology/agent-cwvvsu/chat",
           {
             message:`${tutorial.textForAI}`,
           },
@@ -430,7 +430,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
       setIsLoading(true);
 
       const response = await axios.post(
-        "https://autonome.alt.technology/agent-eqtrhs/chat",
+        "https://autonome.alt.technology/agent-cwvvsu/chat",
         { message },
         {
           auth: {
