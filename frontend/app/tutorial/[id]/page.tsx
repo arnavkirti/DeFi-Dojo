@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppStore } from "@/store/store";
 import { tutorials } from "./tutorial";
 import { InitialMessage } from "./InitialMessage";
-
+import { ethers } from "ethers";
 // Add these new types
 // Add these new types
 
@@ -80,7 +80,6 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
         setIsInitialMessageLoading(false);
 
         setInitialMessage(response.data.response[0]);
-        
       } catch (error) {
         console.error("Error fetching tutorial content:", error);
         setInitialMessage(
@@ -130,6 +129,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
     );
 
     if (allLevelsCompleted) {
+      await handleNFTmint();
       alert(
         "Congratulations! You've completed all levels. NFT will be minted."
       );
@@ -191,6 +191,29 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
     setInputMessage("");
   };
 
+  const handleNFTmint = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_AI_AGENT_URL!,
+      {
+        message: `Deploy an nft contract with:
+        name: MileAchiever
+        Symbol: MA 
+        base url: https://launchpad.collectify.app/main/metadata/B2VW359XP 
+        // mint this nft to 0x136D80a50d336B378B4D10D3c2312eD192bDeeE5`,
+      },
+      {
+        auth: {
+          username: process.env.NEXT_PUBLIC_AI_AGENT_USERNAME!,
+          password: process.env.NEXT_PUBLIC_AI_AGENT_PASSWORD!,
+        },
+      }
+    );
+    console.log(response.data);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 h-screen mt-16">
       <div className="grid grid-cols-2 gap-6 h-full">
@@ -217,9 +240,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
                     </div>
                   )}
                   <div className="flex justify-start">
-                    
-                      <InitialMessage content={initialMessage} />
-                  
+                    <InitialMessage content={initialMessage} />
                   </div>
 
                   {messages.map((message, index) => (
@@ -440,7 +461,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
               className={`w-full relative overflow-hidden transition-all duration-300
                 ${
                   tasks.every((levelTasks) =>
-                    levelTasks.every((task) => task.completed)
+                    levelTasks.every((task) => task.completed) 
                   )
                     ? "bg-gradient-to-r from-primary to-accent"
                     : "bg-muted/20"
