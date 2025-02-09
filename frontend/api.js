@@ -41,9 +41,9 @@ const fetchdataSushi = async () => {
     return data
 }
 
-// const usdtsushi = fetchdataSushi().then(data => {const sushi = data.token.decimals  
-//     console.log(data)
-// })
+const usdtsushi = fetchdataSushi().then(data => {const sushi = data.token.decimals  
+    console.log(data)
+})
 
 const Aavequery = 
 `{
@@ -69,36 +69,36 @@ const fetchdataAave = async () => {
     return data
 }
 
-fetchdataAave().then(users => {
-    users.users.forEach(user => {
-        let totalCollateralETH = 0;
-        let totalDebtETH = 0;
+// fetchdataAave().then(users => {
+//     users.users.forEach(user => {
+//         let totalCollateralETH = 0;
+//         let totalDebtETH = 0;
 
-        console.log("\nUser:", user.id);
+//         console.log("\nUser:", user.id);
 
-        user.reserves.forEach(reserve => {
-            const symbol = reserve.reserve.symbol;
-            const priceInEth = parseFloat(reserve.reserve.price.priceInEth) || 0;
-            const collateralValue = parseFloat(reserve.currentATokenBalance) * priceInEth;
-            const debtValue = parseFloat(reserve.currentTotalDebt) * priceInEth;
-            const liquidationThreshold = parseFloat(reserve.reserve.reserveLiquidationThreshold) / 10000; // Convert bps to decimal
+//         user.reserves.forEach(reserve => {
+//             const symbol = reserve.reserve.symbol;
+//             const priceInEth = parseFloat(reserve.reserve.price.priceInEth) || 0;
+//             const collateralValue = parseFloat(reserve.currentATokenBalance) * priceInEth;
+//             const debtValue = parseFloat(reserve.currentTotalDebt) * priceInEth;
+//             const liquidationThreshold = parseFloat(reserve.reserve.reserveLiquidationThreshold) / 10000; // Convert bps to decimal
 
-            totalCollateralETH += collateralValue * liquidationThreshold;
-            totalDebtETH += debtValue;
+//             totalCollateralETH += collateralValue * liquidationThreshold;
+//             totalDebtETH += debtValue;
 
-            console.log(`${symbol}:`);
-            console.log(`  - Debt: ${debtValue.toFixed(6)} ETH`);
-            console.log(`  - Collateral: ${collateralValue.toFixed(6)} ETH`);
-            console.log(`  - Liquidation Threshold: ${(liquidationThreshold * 100).toFixed(2)}%`);
-        });
+//             console.log(`${symbol}:`);
+//             console.log(`  - Debt: ${debtValue.toFixed(6)} ETH`);
+//             console.log(`  - Collateral: ${collateralValue.toFixed(6)} ETH`);
+//             console.log(`  - Liquidation Threshold: ${(liquidationThreshold * 100).toFixed(2)}%`);
+//         });
 
-        const healthFactor = totalDebtETH > 0 ? totalCollateralETH / totalDebtETH : Infinity;
+//         const healthFactor = totalDebtETH > 0 ? totalCollateralETH / totalDebtETH : Infinity;
 
-        console.log(`\n🔴 Health Factor: ${healthFactor.toFixed(2)}`);
-        console.log(healthFactor < 1 ? "⚠️ Eligible for Liquidation!" : "✅ Safe Position");
-        console.log("---------------------------------------------------");
-    });
-});
+//         console.log(`\n🔴 Health Factor: ${healthFactor.toFixed(2)}`);
+//         console.log(healthFactor < 1 ? "⚠️ Eligible for Liquidation!" : "✅ Safe Position");
+//         console.log("---------------------------------------------------");
+//     });
+// });
 
 "binance price getting api" = https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT
 
@@ -114,14 +114,14 @@ const data = await request(url, borrowRateQuery)
 return data
 }
 
-// fetchBorrowRate().then(data => {
-//     data.reserves.forEach(reserve => {
-//       const borrowRateRay = BigInt(reserve.variableBorrowRate); // Handle large numbers
-//       const borrowRate = Number(borrowRateRay) / 1e27 * 100; // Convert to %
+fetchBorrowRate().then(data => {
+    data.reserves.forEach(reserve => {
+      const borrowRateRay = BigInt(reserve.variableBorrowRate); // Handle large numbers
+      const borrowRate = Number(borrowRateRay) / 1e27 * 100; // Convert to %
 
-//       console.log(`${reserve.symbol} - Borrow Rate: ${borrowRate.toFixed(2)}%`);
-//     });
-// })
+      console.log(`${reserve.symbol} - Borrow Rate: ${borrowRate.toFixed(2)}%`);
+    });
+})
 
 const compoundQuery = `{
 markets(first: 5) {  # Fetch only 5 markets to reduce indexer load

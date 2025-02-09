@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { PrivyProvider } from "@/components/providers/PrivyProvider";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import "@coinbase/onchainkit/styles.css"
+import { Providers } from "@/coinbaseProvider";
+import { cookieToInitialState } from 'wagmi';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,15 +27,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const initialState = cookieToInitialState(
+  //   getConfig(),
+  //   headers().get('cookie')
+  // );
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PrivyProvider>
-          <Navbar />
-          {children}
-        </PrivyProvider>
+        <Providers>
+          <PrivyProvider>
+            <Navbar />
+            {children}
+          </PrivyProvider>
+        </Providers>
       </body>
     </html>
   );
