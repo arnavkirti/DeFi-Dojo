@@ -4,10 +4,12 @@ import { usePrivy } from "@privy-io/react-auth";
 
 interface MockUniswapInterfaceProps {
   onTaskProgress: (taskType: string) => void;
+  tutorial: any;
 }
 
 export default function MockUniswapInterface({
   onTaskProgress,
+  tutorial,
 }: MockUniswapInterfaceProps) {
   const { login, authenticated } = usePrivy();
   const [selectedTokens, setSelectedTokens] = useState({ from: "", to: "" });

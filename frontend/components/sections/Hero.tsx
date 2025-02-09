@@ -6,17 +6,19 @@ import { usePrivy } from "@privy-io/react-auth";
 import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FiArrowRight, FiChevronDown } from "react-icons/fi";
+import {useAppStore} from "@/store/store";
 
 const Hero = () => {
   const router = useRouter();
   const { login, authenticated } = usePrivy();
   const { scrollY } = useScroll();
+  const { initialMessage, setInitialMessage } = useAppStore();
 
   // Parallax effect for background
   const backgroundY = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-  const handleGetStarted = () => {
+  const handleGetStarted = async () => {
     if (!authenticated) {
       login();
     } else {
