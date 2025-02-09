@@ -20,7 +20,7 @@ DeFi-Dojo is an interactive DeFi learning platform designed to educate users abo
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/defi-dojo.git
-   cd defi-dojo
+   cd frontend
    ```
 2. Install dependencies:
    ```bash
