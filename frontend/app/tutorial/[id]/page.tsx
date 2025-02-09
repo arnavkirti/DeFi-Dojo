@@ -12,6 +12,7 @@ import MockFlashLoansInterface from "@/components/MockFlashLoansInterface";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppStore } from "@/store/store";
 import { tutorials } from "./tutorial";
+import { InitialMessage } from "./InitialMessage";
 
 // Add these new types
 // Add these new types
@@ -76,9 +77,10 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
             },
           }
         );
+        setIsInitialMessageLoading(false);
 
         setInitialMessage(response.data.response[0]);
-        setIsInitialMessageLoading(false);
+        
       } catch (error) {
         console.error("Error fetching tutorial content:", error);
         setInitialMessage(
@@ -215,9 +217,9 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
                     </div>
                   )}
                   <div className="flex justify-start">
-                    <div className="bg-muted/20 p-4 rounded-lg text-white text-sm shadow-md">
-                      {initialMessage}
-                    </div>
+                    
+                      <InitialMessage content={initialMessage} />
+                  
                   </div>
 
                   {messages.map((message, index) => (
@@ -297,7 +299,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* Right Panel - Tasks and Mock Interface */}
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full ">
           <Tabs
             value={currentLevel.toString()}
             onValueChange={(value) => {
@@ -307,19 +309,23 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
             }}
             className="w-full"
           >
-            <TabsList className="w-full justify-start mb-4">
+            <TabsList className="w-full justify-between mb-4">
               {tutorial.levels.map((level, index) => (
                 <TabsTrigger
                   key={index}
                   value={index.toString()}
                   disabled={!unlockedLevels.includes(index)}
-                  className="relative"
+                  className={`relative w-full ${
+                    !unlockedLevels.includes(index)
+                      ? "text-red-500 bg-red-500/10"
+                      : "text-green-500 bg-green-500/10"
+                  }`}
                 >
-                  {level.title}
+                  Level : {index + 1}
                   {!unlockedLevels.includes(index) ? (
-                    <Lock className="w-3 h-3 ml-2" />
+                    <Lock className="w-3 h-3 ml-2 text-red-500" />
                   ) : (
-                    <Unlock className="w-3 h-3 ml-2" />
+                    <Unlock className="w-3 h-3 ml-2 text-green-500" />
                   )}
                 </TabsTrigger>
               ))}
