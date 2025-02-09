@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { usePrivy } from "@privy-io/react-auth";
+import Popup from "./Popup";
 
 interface MockDaoInterfaceProps {
   onTaskProgress: (taskType: string) => void;
@@ -18,11 +19,19 @@ export default function MockDaoInterface({
   const [proposalsReviewed, setProposalsReviewed] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [hasDiscussed, setHasDiscussed] = useState(false);
-
+  const [showPopup, setShowPopup] = useState(false);
   // Join DAO Community
   const handleJoinDAO = () => {
     setHasJoinedDAO(true);
     onTaskProgress("JOIN_DAO");
+  };
+
+  const handlePopup = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
   };
 
   // Review DAO Proposals
@@ -51,11 +60,14 @@ export default function MockDaoInterface({
 
       {/* Join DAO Community */}
       <Button
-        onClick={handleJoinDAO}
+        onClick={() => {
+          handlePopup();
+        }}
         className="w-full"
-        disabled={hasJoinedDAO}
+        
       >
-        {hasJoinedDAO ? "DAO Joined ✅" : "Join DAO Community"}
+        {showPopup && <Popup onClose={handleClosePopup} />}
+        Join DAO Community ✅
       </Button>
     </div>
   );
