@@ -28,7 +28,7 @@ DeFi-Dojo is an interactive DeFi learning platform designed to educate users abo
    ```
 3. Start the development server:
    ```bash
-   npm start
+   npm run dev
    ```
 
 
