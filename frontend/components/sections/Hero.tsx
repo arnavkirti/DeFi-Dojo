@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
@@ -5,46 +7,12 @@ import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FiArrowRight, FiChevronDown } from "react-icons/fi";
 
-const WoodenButton = ({
-  children,
-  variant = "default",
-  size,
-  onClick,
-  className,
-  ...props
-}: {
-  children: React.ReactNode;
-  variant?: "default" | "outline" | "ghost";
-  size?: string;
-  onClick?: () => void;
-  className?: string;
-  props?: any;
-}) => (
-  <Button
-    {...props}
-    className={`relative overflow-hidden ${className} ${
-      variant === "outline"
-        ? "border-[#8b5e3c] bg-[#2b1810] text-[#d4bfb0] hover:bg-[#3d2315]"
-        : "bg-[#8b5e3c] text-[#d4bfb0] hover:bg-[#7a5033]"
-    } rounded-lg shadow-lg transform transition-all duration-200`}
-  >
-    <div className="absolute inset-0 opacity-20 pointer-events-none">
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E")`,
-        }}
-      />
-    </div>
-    {children}
-  </Button>
-);
-
 const Hero = () => {
   const router = useRouter();
   const { login, authenticated } = usePrivy();
   const { scrollY } = useScroll();
 
+  // Parallax effect for background
   const backgroundY = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
@@ -62,56 +30,29 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen pt-16 flex items-center justify-center overflow-hidden bg-[#2b1810]">
-      {/* Wooden texture background */}
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Animated wood grain lines */}
+    <section className="relative min-h-screen pt-16 flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background/95 to-background/90">
+      {/* Animated background elements */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-full w-1 bg-gradient-to-b from-transparent via-[#8b5e3c]/20 to-transparent"
-            style={{ left: `${i * 20}%` }}
-            initial={{ scaleY: 0 }}
-            animate={{
-              scaleY: [0, 1, 0],
-              opacity: [0, 0.3, 0],
-            }}
-            transition={{
-              duration: 3,
-              delay: i * 0.2,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-          />
-        ))}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/20 via-background/0 to-background pointer-events-none" />
+        <div className="absolute inset-0 bg-grid-white/[0.02] pointer-events-none" />
       </motion.div>
 
-      {/* Japanese-style decorative circles */}
+      {/* Floating elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(3)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-64 h-64 rounded-full border-2 border-[#8b5e3c]/20"
+            className="absolute w-16 h-16 bg-primary/10 rounded-full"
             initial={{
               x: Math.random() * window.innerWidth,
               y: Math.random() * window.innerHeight,
-              scale: 0,
             }}
             animate={{
               x: Math.random() * window.innerWidth,
               y: Math.random() * window.innerHeight,
-              scale: [0, 1, 0],
-              opacity: [0, 0.2, 0],
             }}
             transition={{
-              duration: 8 + Math.random() * 4,
+              duration: 10 + Math.random() * 10,
               repeat: Infinity,
               repeatType: "reverse",
             }}
@@ -130,20 +71,15 @@ const Hero = () => {
             transition={{ duration: 0.8 }}
             className="mb-8"
           >
-            {/* Japanese-style frame */}
-            <div className="relative mb-8 p-6">
-              <div className="absolute inset-0 border-2 border-[#8b5e3c]/40 rounded-lg" />
-              <div className="absolute inset-2 border border-[#8b5e3c]/20 rounded-lg" />
-              <motion.h1
-                className="text-5xl md:text-6xl font-bold mb-6 text-[#d4bfb0]"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                Welcome to DeFi-Dojo
-              </motion.h1>
-            </div>
+            <motion.h1
+              className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              Welcome to DeFi-Dojo
+            </motion.h1>
             <motion.p
-              className="text-xl mb-8 text-[#a18072]"
+              className="text-xl mb-8 text-muted-foreground"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -160,23 +96,29 @@ const Hero = () => {
             transition={{ delay: 0.6 }}
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <WoodenButton size="lg" onClick={handleGetStarted}>
+              <Button
+                size="lg"
+                className="bg-primary hover:bg-primary/90 flex items-center gap-2 px-6"
+                onClick={handleGetStarted}
+              >
                 Get Started
-                <FiArrowRight className="w-4 h-4 ml-2" />
-              </WoodenButton>
+                <FiArrowRight className="w-4 h-4" />
+              </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <WoodenButton
+              <Button
                 size="lg"
                 variant="outline"
+                className="border-primary/20 flex items-center gap-2 px-6"
                 onClick={() => router.push("/#features")}
               >
                 Learn More
-                <FiChevronDown className="w-4 h-4 ml-2" />
-              </WoodenButton>
+                <FiChevronDown className="w-4 h-4" />
+              </Button>
             </motion.div>
           </motion.div>
 
+          {/* Scroll indicator */}
           <motion.div
             className="absolute bottom-[-200px] left-1/2 transform -translate-x-1/2 mt-20"
             initial={{ opacity: 0, y: -20 }}
@@ -188,14 +130,14 @@ const Hero = () => {
               duration: 1.5,
             }}
           >
-            <WoodenButton
+            <Button
               variant="ghost"
               size="sm"
+              className="text-muted-foreground hover:text-primary"
               onClick={scrollToFeatures}
-              className="text-[#a18072] hover:text-[#d4bfb0]"
             >
               <FiChevronDown className="w-6 h-6" />
-            </WoodenButton>
+            </Button>
           </motion.div>
         </motion.div>
       </div>
