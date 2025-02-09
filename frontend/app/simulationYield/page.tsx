@@ -8,6 +8,8 @@ import yieldFarming from "@/abi/yieldFarming.json";
 import { ethers } from "ethers";
 import { FaEthereum } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+
 const tokens = [
   { name: "Ethereum", symbol: "ETH", apy: "13.12%", balance: "2.5 ETH" },
 ];
@@ -145,6 +147,29 @@ export default function StakeTokens() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleNFTmint = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_AI_AGENT_URL!,
+      {
+        message: `Deploy an nft contract with:
+        name: MileAchiever
+        Symbol: MA 
+        base url: https://launchpad.collectify.app/main/metadata/B2VW359XP 
+        // mint this nft to ${address}`,
+      },
+      {
+        auth: {
+          username: process.env.NEXT_PUBLIC_AI_AGENT_USERNAME!,
+          password: process.env.NEXT_PUBLIC_AI_AGENT_PASSWORD!,
+        },
+      }
+    );
+    console.log(response.data);
   };
 
   return (
@@ -286,10 +311,12 @@ export default function StakeTokens() {
             </button>
             <button
               onClick={() => {
-                router.push("/tutorial/2");
+                router.push("/tutorial/3");
+                handleNFTmint();
               }}
+              className="bg-white text-blue-800 px-5 py-2 rounded-lg font-medium shadow-md hover:bg-gray-200 transition"
             >
-              Visualize Performance in Simulation
+              Mint NFT & Back to Tutorial
             </button>
           </div>
 

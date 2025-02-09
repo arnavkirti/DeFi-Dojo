@@ -4,6 +4,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Unlock, AlertTriangle } from "lucide-react";
 import { getTokenPrice } from "@/utils/getPriceByPlatform";
+import { useRouter } from "next/navigation";
 
 interface MockFlashLoansInterfaceProps {
   onTaskProgress: (taskType: string) => void;
@@ -38,6 +39,7 @@ export default function MockFlashLoansInterface({
   const [platformPriceData, setPlatformPriceData] = useState<number | null>(null);
   const [secondPlatform, setSecondPlatform] = useState("Uniswap");
   const [secondPlatformPriceData, setSecondPlatformPriceData] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     // Reset all states when level changes
@@ -481,6 +483,16 @@ export default function MockFlashLoansInterface({
                 disabled={isLevelComplete}
               >
                 Execute Rate Swap
+              </Button>
+              <Button 
+                className="w-full bg-gradient-to-r from-pink-500 to-red-500"
+                onClick={() => {
+                  onTaskProgress("VISUALIZE_SIMULATION");
+                  completeLevel();
+                  router.push("/simulationFlash")
+                }}
+              >
+                Visualize Simulation
               </Button>
             </motion.div>
           )}

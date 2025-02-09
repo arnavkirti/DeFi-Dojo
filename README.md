@@ -10,6 +10,10 @@ DeFi-Dojo is an interactive DeFi learning platform designed to educate users abo
 - **DAO Governance**: Participate in governance decisions via simulated DAOs.
 - **Interactive Challenges**: Test knowledge with interactive problem-solving tasks.
 
+## App Architecture
+
+![Architecture](frontend/public/Screenshot.png)
+
 ## Tech Stack
 - **Frontend**: Next.js, TailwindCSS,OnchainKit
 - **Blockchain**: Solidity, Remix, openZeppelin, Coinbase,Base, TheGraph. 
@@ -30,5 +34,6 @@ DeFi-Dojo is an interactive DeFi learning platform designed to educate users abo
    ```bash
    npm run dev
    ```
+
 
 

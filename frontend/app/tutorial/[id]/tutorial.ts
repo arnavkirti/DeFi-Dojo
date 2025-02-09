@@ -43,7 +43,7 @@ export const tutorials = {
       textForAI:
         "Explain how Uniswap's automated market maker (AMM) works, focusing on its liquidity pools, token swaps, and the concept of impermanent loss. Provide an in-depth example of a trade execution on Uniswap.",
     },
-    3: {
+    4: {
       title: "Understanding Dao",
       description: "Learn the basics of DAOs and how they work.",
       content: `
@@ -63,28 +63,7 @@ export const tutorials = {
               completed: false,
               AiPrompt:
                 "Explain what a DAO is and how community platforms like Discord and governance forums help DAO members stay engaged. Provide a step-by-step guide to joining a DAO community, also use a lots of emojis",
-            },
-            {
-              text: "Review recent DAO proposals",
-              type: "REVIEW_PROPOSALS",
-              completed: false,
-              AiPrompt:
-                "Explain how DAO proposals work and how they impact governance. Guide users on where to find and review recent proposals, and analyze their potential impact on the community, also use a lots of emojis",
-            },
-            {
-              text: "Participate in a DAO vote",
-              type: "VOTE_ON_PROPOSAL",
-              completed: false,
-              AiPrompt:
-                "Guide users on how DAO voting works, including different voting mechanisms like token-based voting and quadratic voting. Explain how to cast a vote on a proposal, also use a lots of emojis",
-            },
-            {
-              text: "Discuss DAO governance on the community forum",
-              type: "DISCUSS_GOVERNANCE",
-              completed: false,
-              AiPrompt:
-                "Encourage discussion about DAO governance. Explain the importance of community involvement and how users can contribute by debating proposals and sharing ideas, also use a lots of emojis",
-            },
+            }
           ],
         },
       ],
@@ -252,7 +231,7 @@ export const tutorials = {
       textForAI:
         "Explain how yield farming works, focusing on the different types of yield farming strategies, the benefits of participating in yield farming, and the risks associated with it.",
     },
-    4: {
+    3: {
       title: "Understanding Flash Loans",
       description: "Learn the basics of Flash Loans and how they work.",
       content: `
@@ -360,6 +339,13 @@ export const tutorials = {
               completed: false,
               AiPrompt:
                 "Execute the interest rate swap using a flash loan. Monitor the transaction closely, adjust parameters as needed during execution, and verify that the swap reduces costs or yields the anticipated profit., also use a lots of emojis",
+            },
+            {
+              text: "Visualize the simulation of the interest rate swap",
+              type: "VISUALIZE_SIMULATION",
+              completed: false,
+              AiPrompt:
+                "Visualize the simulation of the interest rate swap, also use a lots of emojis",
             },
           ],
         },

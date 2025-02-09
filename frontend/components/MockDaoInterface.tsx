@@ -57,33 +57,6 @@ export default function MockDaoInterface({
       >
         {hasJoinedDAO ? "DAO Joined ✅" : "Join DAO Community"}
       </Button>
-
-      {/* Review DAO Proposals */}
-      <Button
-        onClick={handleReviewProposals}
-        className="w-full"
-        disabled={!hasJoinedDAO || proposalsReviewed}
-      >
-        {proposalsReviewed ? "Proposals Reviewed ✅" : "Review DAO Proposals"}
-      </Button>
-
-      {/* Vote on a Proposal */}
-      <Button
-        onClick={handleVote}
-        className="w-full"
-        disabled={!proposalsReviewed || hasVoted}
-      >
-        {hasVoted ? "Voted on Proposal ✅" : "Vote on a DAO Proposal"}
-      </Button>
-
-      {/* Discuss Governance */}
-      <Button
-        onClick={handleDiscussGovernance}
-        className="w-full"
-        disabled={!hasVoted || hasDiscussed}
-      >
-        {hasDiscussed ? "Governance Discussed ✅" : "Discuss DAO Governance"}
-      </Button>
     </div>
   );
 }
