@@ -407,6 +407,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
     );
 
     if (allLevelsCompleted) {
+      handleNFTMint();
       alert("Congratulations! You've completed all levels. NFT will be minted.");
       setIsNFTMinted(true);
     } else {
@@ -463,6 +464,25 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
     setInputMessage("");
   };
 
+  const nftContractAddress = "0x3A4E0C505567EC24da054694b5c5312a88c3922e";
+  const destinationWallet = "0x136D80a50d336B378B4D10D3c2312eD192bDeeE5";
+
+  const handleNFTMint = async () => {
+    const response = await axios.post(
+      "https://autonome.alt.technology/agent-nggqoy/chat",
+      {
+        message: `nft contract: ${nftContractAddress}, destination wallet: ${destinationWallet}, Mint NFT to This Address`,
+      },
+      {
+        auth: {
+          username: process.env.NEXT_PUBLIC_AI_AGENT_USERNAME!,
+          password: process.env.NEXT_PUBLIC_AI_AGENT_PASSWORD!,
+        },
+      }
+    );
+    alert(response.data.response[0] + "NFT Minted ✨");
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 h-screen mt-16">
       <div className="grid grid-cols-2 gap-6 h-full">
@@ -481,6 +501,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
                     <div className="w-3 h-3 bg-primary/50 rounded-full animate-bounce" />
                     <div className="w-3 h-3 bg-primary/50 rounded-full animate-bounce delay-100" />
                     <div className="w-3 h-3 bg-primary/50 rounded-full animate-bounce delay-200" />
+                    <div className="w-3 h-3 bg-primary/50 rounded-full animate-bounce delay-300" />
                   </div>
                 </div>
               )}
@@ -525,7 +546,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
                       >
                         <div className="prose prose-invert text-sm">
                           {message.content}
-                        </div>
+                        </div>handleSubmitTasks
                       </div>
                     </div>
                   ))}
@@ -700,7 +721,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
           {/* NFT Claim and Next Tutorial Buttons */}
           <div className="mt-4 space-y-3">
             <Button
-              onClick={handleSubmitTasks}
+              onClick={handleNFTMint}
               className={`w-full relative overflow-hidden transition-all duration-300
                 ${tasks.every((levelTasks) => levelTasks.every((task) => task.completed))
                   ? "bg-gradient-to-r from-primary to-accent"
