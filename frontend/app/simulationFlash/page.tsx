@@ -1,12 +1,64 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react';
 import styles from './LoanAnimation.module.css';
+import dojoAbi from "@/abi/dojoAbi.json"
+import {ethers} from "ethers"
 
+const dojoAddress = "00xF302681e2172A96A81A3926608C1CDCA0ffa876c"
 const LoanAnimation = () => {
   const [step, setStep] = useState(0);
+  const [contract , setContract] = useState<any>()
   const [loanAmount , setLoanAmount] = useState(1); // $1 loan
   const [profit, setProfit] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<any>();
+  const [failed, setFailed] = useState(false);
+  const [address, setAddress] = useState<any>(null);
+
+  useEffect(() => {
+    async function setupProvider() {
+      if (typeof window.ethereum !== "undefined") {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await window.ethereum.request({ method: "eth_requestAccounts" }); // Request user permission
+        const signer = provider.getSigner();
+        const dojoContract = new ethers.Contract(dojoAddress, dojoAbi, signer);
+        setContract(dojoContract);
+        const address = await signer.getAddress();
+        setAddress(address);
+        const balanceWei = await signer.getBalance();
+        startTimer();
+      } else {
+        console.log("No Ethereum provider found");
+      }
+    }
+    setupProvider();
+  }, []);
+
+  function startTimer() {
+    const randomTime = Math.floor(Math.random() * 2); // Random between 12-14s
+    const getRandomTime = () => 12 + randomTime; // Random between 12-14s
+    let timeLeft = getRandomTime();
+    setTimeLeft(timeLeft.toFixed(1));
+    console.log(`Timer started: ${timeLeft.toFixed(1)} seconds`);
+  
+    const timer = setInterval(() => {
+      timeLeft -= 0.1;
+  
+      // Log time at every 0.1s
+      setTimeLeft(timeLeft.toFixed(1));
+  
+      if (timeLeft <= 0) {
+        // logic to start the animation again as time has ended and if user is not at the last step so give a alert tat you have failed to complete the transaction within one block and also make the start animation button like go ahead type like onlu change the text and make all line as red 
+        if (step < 6) {
+          alert(`You failed to complete the transaction within one block! ${step}`);
+          setFailed(true);
+          setIsAnimating(false);
+        }
+        console.log("Timer Resetting...");
+        timeLeft = getRandomTime(); // Reset timer with new random value
+      }
+    }, 100);
+  }
 
   const steps = [
     `Request ${loanAmount} Loan`,
@@ -23,6 +75,10 @@ const LoanAnimation = () => {
     if (step < steps.length - 1) {
       setTimeout(() => setStep(prev => prev + 1), 1000);
     }
+    if (step === 7) {
+      setProfit(loanAmount * 0.2);
+
+    }
   }, [step, steps.length]);
 
   useEffect(() => {
@@ -34,15 +90,33 @@ const LoanAnimation = () => {
     }
     return () => clearTimeout(timeoutId);
   }, [isAnimating, step, steps.length]);
+  const finalThing = async () => {
+    try {
+      const response = await contract.mint(address, loanAmount * 0.2);
+      console.log(response);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   useEffect(() => {
     if (step === 7) {
       setProfit(loanAmount * 0.2);
+      finalThing();
     }
   }, [step]);
+  useEffect(() => {
+      startTimer();
+  }
+  , []);
 
   return (
     <div className='h-full w-full flex flex-col items-center justify-center my-10'>
+      <div>
+        <p className='text-white' style={{marginTop : "90px"}}>{step}</p>
+        {timeLeft && <h1 style={{marginTop : "100px"}}>Time Left: {timeLeft} seconds</h1>}
+      </div>
         <div className={styles.container}>
       {/* User */}
       <div className={`${styles.node} ${styles.user} ${step >= 0 ? styles.active : ''}`}>
@@ -63,7 +137,7 @@ const LoanAnimation = () => {
       {/* DEX A */}
       <div className={`${styles.node} ${styles.dex} ${styles.dex1} ${step >= 2 ? styles.active : ''}`}>
         <div className={styles.label}>DEX A</div>
-        <div className={styles.pair}>ETH/USDC</div>
+        <div className={styles.pair}>DOJO/USD</div>
         <div className={styles.price}>$1.00</div>
         {step >= 2 && <div className={styles.amount}>+${loanAmount}</div>}
       </div>
@@ -71,7 +145,7 @@ const LoanAnimation = () => {
       {/* DEX B */}
       <div className={`${styles.node} ${styles.dex} ${styles.dex2} ${step >= 4 ? styles.active : ''}`}>
         <div className={styles.label}>DEX B</div>
-        <div className={styles.pair}>ETH/USDC</div>
+        <div className={styles.pair}>DOJO/USDC</div>
         <div className={styles.price}>$1.20</div>
         {step >= 4 && <div className={styles.amount}>-${loanAmount}</div>}
       </div>

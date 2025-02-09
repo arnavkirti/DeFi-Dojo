@@ -3,6 +3,7 @@
 import React from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { Button } from "@/components/ui/button";
+import { WalletDefault } from "@coinbase/onchainkit/wallet";
 
 const Navbar = () => {
   const { login, authenticated, user, logout } = usePrivy();
@@ -42,12 +43,12 @@ const Navbar = () => {
                 Disconnect
               </Button>
             ) : (
-              <Button
+              <button
+                 className=""
                 onClick={login}
-                className="bg-primary hover:bg-primary/90"
               >
                 Connect Wallet
-              </Button>
+              </button>
             )}
           </div>
         </div>

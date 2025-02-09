@@ -22,10 +22,33 @@ export default function StakeTokens() {
   const [yieldFarmingContract, setYieldFarmingContract] = useState<any>();
   const [balance, setBalance] = useState<any>();
   const [ethBalance , setEthBalance] = useState<any>();
-  const [userBlance , setUserBalance] = useState<any>();
+  const [userBlance , setUserBalance] = useState<any>();// Random between 12-14s
+  const [timeLeft, setTimeLeft] = useState<any>();
 
   const [signer, setSigner] = useState<any>(null);
   const [address, setAddress] = useState<any>(null);
+
+  function startTimer() {
+    const randomTime = Math.floor(Math.random() * 2); // Random between 12-14s
+    const getRandomTime = () => 12 + randomTime; // Random between 12-14s
+    let timeLeft = getRandomTime();
+    setTimeLeft(timeLeft.toFixed(1));
+    console.log(`Timer started: ${timeLeft.toFixed(1)} seconds`);
+  
+    const timer = setInterval(() => {
+      timeLeft -= 0.1;
+  
+      // Log time at every 0.1s
+      setTimeLeft(timeLeft.toFixed(1));
+  
+      if (timeLeft <= 0) {
+        console.log("Timer Resetting...");
+        timeLeft = getRandomTime(); // Reset timer with new random value
+      }
+    }, 100);
+  }
+  
+  // Function to get random time between 12 and 14 seconds
 
   useEffect(() => {
     async function setupProvider() {
@@ -43,6 +66,7 @@ export default function StakeTokens() {
         setUserBalance(balanceEth);
         setSigner(signer);
         setAddress(address);
+        startTimer();
       } else {
         console.log("No Ethereum provider found");
       }
