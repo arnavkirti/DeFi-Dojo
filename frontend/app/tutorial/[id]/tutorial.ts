@@ -239,6 +239,13 @@ export const tutorials = {
               AiPrompt:
                 "Analyze historical data and market trends for better decision-making, also use a lots of emojis",
             },
+            {
+              text: "Visualize your yield farming performance over time",
+              type: "VISUALIZE_PERFORMANCE",
+              completed: false,
+              AiPrompt:
+                "Visualize your yield farming performance over time, also use a lots of emojis",
+            },
           ],
         },
       ],

@@ -202,7 +202,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
         name: MileAchiever
         Symbol: MA 
         base url: https://launchpad.collectify.app/main/metadata/B2VW359XP 
-        // mint this nft to 0x136D80a50d336B378B4D10D3c2312eD192bDeeE5`,
+        // mint this nft to ${address}`,
       },
       {
         auth: {
@@ -219,15 +219,15 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
       <div className="grid grid-cols-2 gap-6 h-full">
         {/* Left Panel - Tutorial Content */}
         <div className="">
-          <div className="bg-muted/5 rounded-lg pl-6 pr-6 pt-6  border border-primary/10 h-[90%] overflow-y-auto">
+          <div className="bg-muted/5 rounded-lg pl-6 pr-6 pt-6 border border-primary/10 h-[90%] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/30 transition-colors">
             <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
               {tutorial.title}
             </h1>
 
             {/* Chat */}
-            <div className="  overflow-y-scroll">
-              <div className=" h-[900px] flex flex-col ">
-                <div className="flex-1  space-y-4 mb-4">
+            <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/30 transition-colors">
+              <div className="h-[900px] flex flex-col">
+                <div className="flex-1 space-y-4 mb-4">
                   {isInitialMessageLoading && (
                     <div className="flex justify-start">
                       <div className="bg-muted/20 p-3 rounded-lg">
@@ -247,22 +247,20 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
                     <div
                       key={index}
                       className={`
-                        flex ${
-                          message.role === "user"
-                            ? "justify-end"
-                            : "justify-start"
-                        }
-                      `}
+                    flex ${
+                      message.role === "user" ? "justify-end" : "justify-start"
+                    }
+                  `}
                     >
                       <div
                         className={`
-                          max-w-[80%] p-3 rounded-lg
-                          ${
-                            message.role === "user"
-                              ? "bg-primary/20 ml-auto"
-                              : "bg-muted/20"
-                          }
-                        `}
+                      max-w-[80%] p-3 rounded-lg
+                      ${
+                        message.role === "user"
+                          ? "bg-primary/20 ml-auto"
+                          : "bg-muted/20"
+                      }
+                    `}
                       >
                         <div className="prose prose-invert text-sm">
                           {message.content}
@@ -323,7 +321,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
         <div className="flex flex-col h-full ">
           <Tabs
             value={currentLevel.toString()}
-            onValueChange={(value) => {
+            onValueChange={(value: string) => {
               if (unlockedLevels.includes(Number(value))) {
                 setCurrentLevel(Number(value));
               }
@@ -461,7 +459,7 @@ export default function TutorialPage({ params }: { params: { id: string } }) {
               className={`w-full relative overflow-hidden transition-all duration-300
                 ${
                   tasks.every((levelTasks) =>
-                    levelTasks.every((task) => task.completed) 
+                    levelTasks.every((task) => task.completed)
                   )
                     ? "bg-gradient-to-r from-primary to-accent"
                     : "bg-muted/20"

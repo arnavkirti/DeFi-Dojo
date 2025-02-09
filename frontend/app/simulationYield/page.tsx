@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { WalletDefault } from "@coinbase/onchainkit/wallet";
+// import { WalletDefault } from "@coinbase/onchainkit/wallet";
 import { useAccount, useBalance } from "wagmi";
-import { FundCard } from "@coinbase/onchainkit/fund";
+// import { FundCard } from "@coinbase/onchainkit/fund";
 import dojoAbi from "@/abi/dojoAbi.json";
 import yieldFarming from "@/abi/yieldFarming.json";
 import { ethers } from "ethers";
 import { FaEthereum } from "react-icons/fa";
-
+import { useRouter } from "next/navigation";
 const tokens = [
   { name: "Ethereum", symbol: "ETH", apy: "13.12%", balance: "2.5 ETH" },
 ];
@@ -24,7 +24,7 @@ export default function StakeTokens() {
   const [ethBalance, setEthBalance] = useState<any>();
   const [userBlance, setUserBalance] = useState<any>(); // Random between 12-14s
   const [timeLeft, setTimeLeft] = useState<any>();
-
+  const router = useRouter();
   const [signer, setSigner] = useState<any>(null);
   const [address, setAddress] = useState<any>(null);
 
@@ -283,6 +283,13 @@ export default function StakeTokens() {
               className="bg-red-500 text-blue-800 px-5 py-2 rounded-lg font-medium shadow-md hover:bg-gray-200 transition"
             >
               Claim Reward
+            </button>
+            <button
+              onClick={() => {
+                router.push("/tutorial/2");
+              }}
+            >
+              Visualize Performance in Simulation
             </button>
           </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { usePrivy } from "@privy-io/react-auth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRouter } from "next/navigation";
 
 interface MockYieldFarmingInterfaceProps {
   onTaskProgress: (taskType: string) => void;
@@ -23,6 +24,7 @@ export default function MockYieldFarmingInterface({
   const [stakingAmount, setStakingAmount] = useState("");
   const [isMonitoring, setIsMonitoring] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const router = useRouter();
 
   // Reset states when level changes
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function MockYieldFarmingInterface({
   const LiquidityProviderInterface = () => (
     <div className="space-y-4">
       <h3 className="text-lg font-medium">Liquidity Pool Dashboard</h3>
-      
+
       <Button
         onClick={() => {
           login();
@@ -101,7 +103,7 @@ export default function MockYieldFarmingInterface({
   const BorrowingInterface = () => (
     <div className="space-y-4">
       <h3 className="text-lg font-medium">Borrowing Dashboard</h3>
-      
+
       <select
         className="w-full p-2 rounded bg-muted/20 border border-primary/20"
         value={selectedPlatform}
@@ -271,6 +273,15 @@ export default function MockYieldFarmingInterface({
             onClick={() => onTaskProgress("ANALYZE_TRENDS")}
           >
             Analyze Trends
+          </Button>
+          <Button
+            className="w-full mt-2"
+            onClick={() => {
+              onTaskProgress("VISUALIZE_PERFORMANCE");
+              router.push("/simulationYield");
+            }}
+          >
+            Visualize Performance in Simulation
           </Button>
         </div>
       )}
