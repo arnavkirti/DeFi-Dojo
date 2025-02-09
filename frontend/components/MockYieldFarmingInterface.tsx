@@ -23,16 +23,16 @@ export default function MockYieldFarmingInterface({
   const [showAnalytics, setShowAnalytics] = useState(false);
 
   // Reset states when level changes
-  useEffect(() => {
-    setSelectedPool("");
-    setDepositAmount("");
-    setSelectedPlatform("");
-    setCollateralAmount("");
-    setLendingAmount("");
-    setStakingAmount("");
-    setIsMonitoring(false);
-    setShowAnalytics(false);
-  }, [level]);
+  // useEffect(() => {
+  //   setSelectedPool("");
+  //   setDepositAmount("");
+  //   setSelectedPlatform("");
+  //   setCollateralAmount("");
+  //   setLendingAmount("");
+  //   setStakingAmount("");
+  //   setIsMonitoring(false);
+  //   setShowAnalytics(false);
+  // }, [level]);
 
   // Level 1: Liquidity Provider Interface
   const LiquidityProviderInterface = () => (

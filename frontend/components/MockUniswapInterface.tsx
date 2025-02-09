@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { usePrivy } from "@privy-io/react-auth";
+import Popup from "@/components/Popup";
 
 interface MockUniswapInterfaceProps {
   onTaskProgress: (taskType: string) => void;
@@ -14,6 +15,15 @@ export default function MockUniswapInterface({
   const { login, authenticated } = usePrivy();
   const [selectedTokens, setSelectedTokens] = useState({ from: "", to: "" });
   const [amount, setAmount] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   // When wallet connects
   const handleConnect = async () => {
@@ -42,6 +52,16 @@ export default function MockUniswapInterface({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold mb-4">Swap Tokens</h2>
+      <div className="p-8 flex flex-col items-center">
+      <button
+        onClick={openPopup}
+        className="bg-primary hover:bg-primary-dark text-white py-2 px-6 rounded-full transition-colors duration-300"
+      >
+        Complete Tutorials & Join DAO
+      </button>
+
+      {isPopupOpen && <Popup onClose={closePopup} />}
+    </div>
 
       {/* Connect Wallet Button */}
       <Button

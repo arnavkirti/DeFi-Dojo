@@ -1,5 +1,5 @@
 export const tutorials = {
-  4: {
+  1: {
     title: "Understanding Uniswap",
     description:
       "Learn the basics of Uniswap and how decentralized exchanges work.",
@@ -245,7 +245,7 @@ export const tutorials = {
     textForAI:
       "Explain how yield farming works, focusing on the different types of yield farming strategies, the benefits of participating in yield farming, and the risks associated with it.",
   },
-  1: {
+  4: {
     title: "Understanding Flash Loans",
     description: "Learn the basics of Flash Loans and how they work.",
     content: `
