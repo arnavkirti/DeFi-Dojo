@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { usePrivy } from "@privy-io/react-auth";
-// import { PrivyClient } from "@privy-io/server-auth";
-
-// const privy = new PrivyClient(
-//   process.env.NEXT_PUBLIC_PRIVY_APP_ID || "",
-//   process.env.PRIVY_SECRET || ""
-// );
-
-// const {id, address, chainType } = await privy.walletApi.create({chainType: "ethereum"});
 
 interface MockUniswapInterfaceProps {
   onTaskProgress: (taskType: string) => void;
+  tutorial: any;
   level: number;
 }
 
 export default function MockUniswapInterface({
   onTaskProgress,
+  tutorial,
 }: MockUniswapInterfaceProps) {
   const { login, authenticated } = usePrivy();
   const [selectedTokens, setSelectedTokens] = useState({ from: "", to: "" });
@@ -44,13 +38,6 @@ export default function MockUniswapInterface({
     if (value && selectedTokens.from && selectedTokens.to) {
       onTaskProgress("REVIEW_SWAP");
     }
-    // console.log(id, address, chainType);
-  };
-
-  const handleSwap = () => {
-    // TODO: Implement swap logic
-    
-    onTaskProgress("SWAP");
   };
 
   return (
@@ -106,7 +93,6 @@ export default function MockUniswapInterface({
       <Button
         className="w-full"
         disabled={!amount || !selectedTokens.from || !selectedTokens.to}
-        onClick={handleSwap}
       >
         Swap
       </Button>

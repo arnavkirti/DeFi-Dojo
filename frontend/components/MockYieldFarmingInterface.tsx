@@ -5,11 +5,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface MockYieldFarmingInterfaceProps {
   onTaskProgress: (taskType: string) => void;
+  tutorial: any;
   level: number;
 }
 
 export default function MockYieldFarmingInterface({
   onTaskProgress,
+  tutorial,
   level,
 }: MockYieldFarmingInterfaceProps) {
   const { login, authenticated } = usePrivy();

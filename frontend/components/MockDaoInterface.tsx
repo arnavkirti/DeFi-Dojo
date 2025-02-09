@@ -4,11 +4,14 @@ import { usePrivy } from "@privy-io/react-auth";
 
 interface MockDaoInterfaceProps {
   onTaskProgress: (taskType: string) => void;
+  tutorial: any;
   level: number;
 }
 
 export default function MockDaoInterface({
   onTaskProgress,
+  tutorial,
+  level,
 }: MockDaoInterfaceProps) {
   const { login, authenticated } = usePrivy();
   const [hasJoinedDAO, setHasJoinedDAO] = useState(false);

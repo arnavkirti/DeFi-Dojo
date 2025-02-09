@@ -7,13 +7,16 @@ import { getTokenPrice } from "@/utils/getPriceByPlatform";
 
 interface MockFlashLoansInterfaceProps {
   onTaskProgress: (taskType: string) => void;
+  tutorial: any;
   level: number;
+  setIsInitialMessageLoading: (loading: boolean) => void;
   onLevelComplete?: () => void;
   currentTasks: { type: string; completed: boolean }[];
 }
 
 export default function MockFlashLoansInterface({
   onTaskProgress,
+  tutorial,
   level,
   onLevelComplete,
   currentTasks,
