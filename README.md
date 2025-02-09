@@ -8,15 +8,13 @@ DeFi-Dojo is an interactive DeFi learning platform designed to educate users abo
 - **Staking & Yield Generation**: Learn how to earn passive income through staking.
 - **Flash Loan Simulation**: Explore the mechanics of flash loans without financial risk.
 - **DAO Governance**: Participate in governance decisions via simulated DAOs.
-- **Quizzes & Challenges**: Test knowledge with interactive quizzes and problem-solving tasks.
+- **Interactive Challenges**: Test knowledge with interactive problem-solving tasks.
 
 ## Tech Stack
-- **Frontend**: React.js, TailwindCSS
-- **Backend**: Node.js, Express.js
-- **Blockchain**: Solidity, Hardhat
-- **Database**: Firebase / PostgreSQL
-- **Wallet Integration**: MetaMask, WalletConnect
-- **Smart Contracts**: ERC-20, ERC-721, Governance Contracts
+- **Frontend**: Next.js, TailwindCSS,OnchainKit
+- **Blockchain**: Solidity, Remix, openZeppelin, Coinbase,Base, TheGraph. 
+- **Smart Contracts**: ERC-20, ERC-721
+- **Agents**: AgentKit,Autonome.
 
 ## Installation & Setup
 1. Clone the repository:
@@ -31,10 +29,6 @@ DeFi-Dojo is an interactive DeFi learning platform designed to educate users abo
 3. Start the development server:
    ```bash
    npm start
-   ```
-4. Deploy smart contracts (if applicable):
-   ```bash
-   npx hardhat run scripts/deploy.js --network testnet
    ```
 
 
