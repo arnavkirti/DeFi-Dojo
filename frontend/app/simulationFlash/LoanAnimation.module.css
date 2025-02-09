@@ -1,0 +1,199 @@
+.container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    margin: 2rem auto;
+    background: #f8f9fa;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+  }
+  
+  .node {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 16px;
+    opacity: 0.6;
+    transition: all 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .node.active {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .user {
+    background: #4CAF50;
+    top: 400px;
+    left: 50px;
+    color: white;
+  }
+  
+  .pool {
+    background: #2196F3;
+    top: 50px;
+    left: 325px;
+    color: white;
+  }
+  
+  .dex {
+    background: linear-gradient(145deg, #ffffff, #f1f1f1);
+    color: #333;
+    border: 2px solid #ddd;
+  }
+  
+  .dex1 {
+    top: 250px;
+    left: 500px;
+  }
+  
+  .dex2 {
+    top: 250px;
+    left: 650px;
+  }
+  
+  /* Keep other styles the same, update arrow styles */
+  
+  .arrows {
+    position: absolute;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    top: 20px;
+    left: 20px;
+  }
+  
+  .arrow {
+    fill: none;
+    stroke: #666;
+    stroke-width: 3;
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    transition: all 1s ease;
+  }
+  
+  .arrow.active {
+    stroke-dashoffset: 0;
+    stroke: #2e7d32;
+  }
+  
+  .arrow.active .arrowhead {
+    fill: #2e7d32;
+  }
+  
+  .status {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2e7d32;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 12px;
+    margin: 0 auto;
+    max-width: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Arrowhead marker */
+  /* .arrows defs {
+    marker {
+      viewBox: 0 0 10 10"
+      refX="9"
+      refY="5"
+      markerWidth="6"
+      markerHeight="6"
+      orient="auto"
+    }
+    #arrowhead {
+      fill: #666;
+    }
+    .arrow.active #arrowhead {
+      fill: #2e7d32;
+    }
+  } */
+
+  /* Add these new styles */
+.token {
+    position: absolute;
+    top: -30px;
+    background: #ffd700;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-weight: bold;
+  }
+  
+  /* Modify existing arrow styles */
+  .arrow {
+    fill: none;
+    stroke: #666;
+    stroke-width: 3;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: all 1s ease;
+  }
+  
+  .arrow.active {
+    stroke-dashoffset: 0;
+    stroke: #2e7d32;
+  }
+  
+  /* Update DEX positions */
+  .dex1 {
+    top: 150px;
+    left: 500px;
+  }
+  
+  .dex2 {
+    top: 150px;
+    left: 650px;
+  }
+  
+  /* Update pool position */
+  .pool {
+    top: 50px;
+    left: 325px;
+  }
+  
+  /* Update user position */
+  .user {
+    top: 400px;
+    left: 50px;
+  }
+  .startButton {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .startButton:disabled {
+    background: #81C784;
+    cursor: not-allowed;
+  }
+  
+  .startButton:hover:not(:disabled) {
+    background: #45a049;
+    transform: translateX(-50%) scale(1.05);
+  }
