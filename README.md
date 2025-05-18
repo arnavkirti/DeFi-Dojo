@@ -15,7 +15,7 @@ DeFi-Dojo is an interactive DeFi learning platform designed to educate users abo
 ![Architecture](frontend/public/Screenshot.png)
 
 ## Tech Stack
-- **Frontend**: Next.js, TailwindCSS,OnchainKit
+- **Front-end**: Next.js, TailwindCSS,OnchainKit
 - **Blockchain**: Solidity, Remix, openZeppelin, Coinbase,Base, TheGraph. 
 - **Smart Contracts**: ERC-20, ERC-721
 - **Agents**: AgentKit,Autonome.
